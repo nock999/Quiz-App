@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz-App</title>
+    <title>Quiz Quest</title>
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Quiz Quest</h1>
-    </header>
-    <main>
-        <form action="Questions.html">
-        <label for="file">Upload file</label>
-        <input type="file" id="csvFile" accept=".csv" required>
-    </main>
-    <button type="submit" value="start" name="startbtn" id="uploadbtn" class="mainbtn" onclick="sendFile()">START
-    </button>
-    </form>
+    <div class="upload-app">
+        <header class="upload-header">
+            <h1>Quiz Quest</h1>
+            <p>Upload a CSV file to start a focused learning session.</p>
+        </header>
+        <form id="upload-form" class="upload-card">
+            <label class="file-label" for="csvFile">CSV file</label>
+            <input type="file" id="csvFile" accept=".csv" required>
+            <p class="hint">Format: question, options..., correct option, explanation (optional)</p>
+            <button type="submit" class="primary-button">Start quiz</button>
+        </form>
+    </div>
 </body>
 </html>

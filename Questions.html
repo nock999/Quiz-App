@@ -3,18 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz-Questions</title>
+    <title>Quiz Quest</title>
     <link rel="stylesheet" href="quizstyle.css">
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Quiz Quest</h1>
-    <div id="quiz-container">
+    <div class="app">
+        <header class="app-header">
+            <button id="back-btn" class="icon-button" aria-label="Back">&#8592;</button>
+            <div class="app-title">Quiz Quest</div>
+            <div class="header-icons">
+                <span class="icon-placeholder">🔊</span>
+                <span class="icon-placeholder">aA</span>
+            </div>
+        </header>
+
+        <div class="progress-bar">
+            <div id="progress-fill"></div>
+        </div>
+
+        <main id="question-container" aria-live="polite"></main>
+
+        <footer class="app-footer">
+            <button id="continue-btn" class="primary-button" disabled>Continue</button>
+        </footer>
     </div>
-    <script defer src="script1.js"></script>
-    <div id="btn-div">
-        <button type="button" onclick="showResult()" class="mainbtn">Next</button>
-        <button type="button" onclick="resetPage()" class="mainbtn">Reset</button>
-    </div>
+
+    <script src="script1.js"></script>
 </body>
 </html>

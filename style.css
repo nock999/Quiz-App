@@ -1,102 +1,120 @@
-* {
-    padding:0;
-    margin:0;
-    box-sizing:border-box; 
-}
 :root {
-    --btncolor: #ffe74cff;
-    --wrong: #ff5964ff;
-    --white: #ffffffff;
-    --correct: #6bf178ff;
-    --bgcolor: #35a7ffff;
-    --textbg: #D9D9D9;
-    --fontfam:Arial,
-        Helvetica,
-        sans-serif;
+    --bg: #0f172a;
+    --card: #111d33;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --accent: #facc15;
+    --accent-dark: #d4a30b;
+    --border: #1e293b;
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
-body {
-    background: url("./images/bg.png");
-    background-repeat: no-repeat;
-    background-color:var(--bgcolor);
-    background-size:cover;
-    display:grid;
-    grid-template-rows: 1fr ;
-    place-items: center;
-    gap:6rem;
-    font-family: var(--fontfam);
-}
-h1 {
-    font-size:clamp(3px,6rem,8rem);
-    text-align:center;
-    color:var(--white);
-}
-#inputfile {
-padding:1rem;
-background-color: var(--btncolor);
-background-image: url("./images/wordupload.jpg");
-background-position: right;
-background-size:50px;
-background-repeat: no-repeat;
-border-radius: 1rem;
-}
-label {
-    font-weight:bold;
-    font-size:clamp(0.5rem,2rem,5rem);
-}
-.mainbtn {
-    background-color: var(--btncolor);
-    width:clamp(2rem,5rem,10rem);
-    height:3rem;
-    border-radius: 1rem;
-}
-main {
-container: main inline-size;
-}
-@container main (width < 350px) {
-max-width:70vw;
-}
-@media only screen and (width < 480px) and (orientation = portrait) {
-    *{
-        min-width: 70vw;
-        font-size: clamp(3px,5px,8px);
-        overflow: scroll;
-        word-wrap: break-word;
-        place-items: center;
-        gap:5px;
-    }
-h1{
-        font-size:2px;
-        word-wrap:break-word;
-    }
-label ,input{
-        max-width:50vw;
-    }
-button {
-        fontisize:clamp(10px,20px,30px);
-    }
 
-        }
-@media only screen and (481px <= width <= 768) and (orientation = landscape)
-{
 * {
-    min-width: 70vw;
-    font-size: clamp(30px,50px,70px);
-    overflow: scroll;
-    word-wrap: break-word;
-    place-items: center;
-    gap: 5px;
+    box-sizing: border-box;
 }
 
-h1 {
-    font-size: 30px;
-    word-wrap: break-word;
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #1e293b 0%, #020617 60%);
+    color: var(--text);
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
 }
 
-label ,input {
-    max-width:100px;
+.upload-app {
+    width: min(520px, 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
-button {
-    fontisize: clamp(10px, 20px, 30px);
+.upload-header h1 {
+    margin: 0 0 0.5rem;
+    font-size: clamp(2rem, 6vw, 3rem);
 }
+
+.upload-header p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.4;
+}
+
+.upload-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    box-shadow: 0 25px 50px rgba(2, 6, 23, 0.4);
+}
+
+.file-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+#csvFile {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px dashed var(--muted);
+    padding: 0.8rem;
+    background: transparent;
+    color: var(--text);
+}
+
+#csvFile::file-selector-button {
+    border: none;
+    border-radius: 0.6rem;
+    background: var(--accent);
+    color: #1f2937;
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.hint {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 0.25rem 0 0.5rem;
+}
+
+.primary-button {
+    border: none;
+    border-radius: 1rem;
+    padding: 0.9rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: #0f172a;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.primary-button:hover,
+.primary-button:focus {
+    background: var(--accent-dark);
+    outline: none;
+}
+
+.primary-button:active {
+    transform: scale(0.98);
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 1.5rem 1rem;
+    }
+
+    .upload-card {
+        padding: 1.25rem;
+    }
 }
