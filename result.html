@@ -3,100 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz-Result</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        h2 {
-            font-size:clamp(1rem,4rem,6rem);
-            text-align: center;
-            font-weight:bolder;
-        }
-        #result {
-            text-align:center;
-        }
-        .rescorrect , .reswrong{
-            font-size:clamp(0.8rem,1.8rem,2.3rem);
-            font-weight: bolder;
-            color:black;
-            float:right;
-            line-height: 0;
-            border:0.4em solid #6bf178ff;
-        }
-    
-        .reswrong
-        {
-            border:0.4em solid #ff5964ff;
-        }
-        button {
-            width:10rem;
-            height:5rem;
-            background-color: #ffe74cff;
-            font-size:clamp(0.5rem,1rem,2rem);
-            padding:1.5rem;
-            margin:2rem;
-            text-align:left;
-            font-weight: bold;
-            margin:4rem;
-        }
-        h3 {
-            font-size:clamp(0.6rem,3rem,5rem) ;
-            font-weight: bold;
-            color:white;
-            margin-top:0.1rem;
-        }
-        @media only screen and (width < 480px) and (orientation = portrait) {
-            div {
-                width:85vw;
-                text-align: center;
-            }
-        .rescorrect,.reswrong {
-        min-width: min-content;
-        height:auto;
-        font-size:2em;
-        font-weight: bolder;
-        color:black;
-        float: right;
-        line-height:unset;
-        border: 0.5em solid darkslateblue; 
-         }
-         button {
-        width: 80%; 
-        height: auto; 
-        background-color: #ffe74cff;
-        font-size: clamp(0.8rem, 1.8rem, 2.3rem); 
-        padding: 1rem 1.5rem; 
-        margin: 2rem auto; 
-        text-align: center; 
-        font-weight: bold;
-    }
-            h3 {
-                text-align: center;
-            }
-        }
-    </style>
+    <title>Quiz Quest – Results</title>
+    <link rel="stylesheet" href="quizstyle.css">
 </head>
 <body>
-    <h1>Quiz-Result</h1>
-    <div id="result">
-        <button type="button" id="correct-btn">Correct Answer </button>
-        <button type="button" id="wrong-btn">
-            Wrong Answer
-        </button>
+    <div class="app result-app">
+        <header class="app-header">
+            <div class="app-title">Session summary</div>
+            <button id="restart-btn" class="icon-button" aria-label="Restart">↻</button>
+        </header>
+        <main id="result-container"></main>
+        <footer class="app-footer">
+            <button id="start-over" class="primary-button">Start new quiz</button>
+        </footer>
     </div>
-    <h3>Thank You</h3>
-    <script type="text/javascript">
-      var correct =  localStorage.getItem('corr');
-      var wrong  = localStorage.getItem('wro');
-     const corr_btn = document.getElementById("correct-btn");
-     const wro_btn = document.getElementById("wrong-btn");
-     const span1 = document.createElement('span');
-     const span2 = document.createElement('span');
-     span1.classList.add('rescorrect');
-     span2.classList.add('reswrong');
-     span1.innerHTML = correct ;
-     span2.innerHTML = wrong;
-     corr_btn.appendChild(span1);
-     wro_btn.appendChild(span2);
-    </script>
+    <script src="result.js"></script>
 </body>
 </html>
