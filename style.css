@@ -25,6 +25,42 @@ body {
     padding: 2rem 1rem;
 }
 
+.splash-body {
+    text-align: center;
+}
+
+.splash-card {
+    background: rgba(17, 29, 51, 0.85);
+    border: 1px solid var(--border);
+    border-radius: 2rem;
+    padding: clamp(2rem, 6vw, 3rem);
+    box-shadow: 0 35px 60px rgba(2, 6, 23, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.splash-card h1 {
+    margin: 0;
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    letter-spacing: -0.04em;
+}
+
+.tagline {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--muted);
+}
+
+.eyebrow {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.35em;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
 .upload-app {
     width: min(520px, 100%);
     display: flex;
@@ -97,6 +133,8 @@ body {
     color: #0f172a;
     cursor: pointer;
     transition: background 0.2s ease, transform 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .primary-button:hover,
