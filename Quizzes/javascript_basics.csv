@@ -1,0 +1,3 @@
+Which keyword is used to declare a constant in JavaScript?,var,const,let,const,Constants cannot be reassigned
+What method converts a JSON string into an object?,JSON.stringify(),JSON.parse(),Object.assign(),JSON.parse(),Transforms JSON into JS values
+Which array method adds an element to the end of an array and returns the new length?,push(),pop(),shift(),push(),Appends to the array tail

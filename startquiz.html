@@ -11,10 +11,24 @@
     <div class="upload-app">
         <header class="upload-header">
             <h1>Quiz Quest</h1>
-            <p>Upload a CSV file to start a focused learning session.</p>
+            <p>Select one of the quizzes on the server or upload your own CSV file to begin.</p>
         </header>
+
+        <div class="upload-card">
+            <div class="server-quizzes">
+                <div class="server-quizzes__header">
+                    <span class="file-label">Available quizzes</span>
+                    <button id="refresh-quizzes" class="ghost-button" type="button">Refresh list</button>
+                </div>
+                <p class="hint">Quizzes are loaded from the <strong>Quizzes</strong> folder.</p>
+                <select id="quiz-list" class="quiz-select" size="5" aria-label="Available quizzes"></select>
+                <button id="start-selected" class="primary-button" type="button">Start selected quiz</button>
+                <p class="hint" id="quiz-status"></p>
+            </div>
+        </div>
+
         <form id="upload-form" class="upload-card">
-            <label class="file-label" for="csvFile">CSV file</label>
+            <label class="file-label" for="csvFile">Upload a CSV file</label>
             <input type="file" id="csvFile" accept=".csv" required>
             <p class="hint">Format: question, options..., correct option, explanation (optional)</p>
             <button type="submit" class="primary-button">Start quiz</button>

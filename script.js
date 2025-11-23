@@ -82,9 +82,92 @@ function handleUpload(event) {
     });
 }
 
+async function fetchQuizList() {
+    const status = document.getElementById('quiz-status');
+    const select = document.getElementById('quiz-list');
+
+    if (!select) return;
+
+    if (status) status.textContent = 'Loading quizzes...';
+    select.innerHTML = '';
+
+    try {
+        const response = await fetch('Quizzes/quizzes.json', { cache: 'no-store' });
+        if (!response.ok) {
+            throw new Error('Unable to load quiz list');
+        }
+
+        const quizzes = await response.json();
+
+        if (!Array.isArray(quizzes) || quizzes.length === 0) {
+            if (status) status.textContent = 'No quizzes found in the Quizzes folder.';
+            return;
+        }
+
+        quizzes.forEach(quiz => {
+            const option = document.createElement('option');
+            option.value = quiz.file;
+            option.textContent = quiz.title || quiz.file;
+            select.appendChild(option);
+        });
+
+        if (status) status.textContent = `Loaded ${quizzes.length} quiz${quizzes.length > 1 ? 'zes' : ''}.`;
+    } catch (error) {
+        console.error(error);
+        if (status) status.textContent = 'Failed to load quizzes from the server.';
+    }
+}
+
+async function loadQuizFromServer() {
+    const select = document.getElementById('quiz-list');
+    const status = document.getElementById('quiz-status');
+
+    if (!select || !select.value) {
+        alert('Please select a quiz from the list.');
+        return;
+    }
+
+    const fileName = select.value;
+    if (status) status.textContent = 'Loading selected quiz...';
+
+    try {
+        const response = await fetch(`Quizzes/${fileName}`, { cache: 'no-store' });
+        if (!response.ok) {
+            throw new Error('Quiz file could not be loaded');
+        }
+
+        const text = await response.text();
+        const questions = parseCsv(text);
+
+        if (!questions.length) {
+            if (status) status.textContent = 'No valid questions found in that CSV file.';
+            return;
+        }
+
+        localStorage.setItem('quizQuestions', JSON.stringify(questions));
+        localStorage.removeItem('quizSummary');
+        window.location.href = 'Questions.html';
+    } catch (error) {
+        console.error(error);
+        if (status) status.textContent = 'There was a problem loading the selected quiz.';
+    }
+}
+
 window.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('upload-form');
     if (form) {
         form.addEventListener('submit', handleUpload);
     }
+
+    const startSelectedButton = document.getElementById('start-selected');
+    if (startSelectedButton) {
+        startSelectedButton.addEventListener('click', loadQuizFromServer);
+    }
+
+    const refreshButton = document.getElementById('refresh-quizzes');
+    if (refreshButton) {
+        refreshButton.addEventListener('click', fetchQuizList);
+    }
+
+    fetchQuizList();
 });

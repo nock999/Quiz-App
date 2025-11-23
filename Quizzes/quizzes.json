@@ -1,0 +1,14 @@
+[
+  {
+    "file": "general_knowledge.csv",
+    "title": "General Knowledge"
+  },
+  {
+    "file": "javascript_basics.csv",
+    "title": "JavaScript Basics"
+  },
+  {
+    "file": "science_trivia.csv",
+    "title": "Science Trivia"
+  }
+]
