@@ -1,49 +1,86 @@
+function splitCsvLine(line) {
+    const cells = [];
+    let current = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < line.length; i += 1) {
+        const char = line[i];
+
+        if (char === '"') {
+            const nextChar = line[i + 1];
+            if (inQuotes && nextChar === '"') {
+                current += '"';
+                i += 1;
+            } else {
+                inQuotes = !inQuotes;
+            }
+        } else if (char === ',' && !inQuotes) {
+            cells.push(current);
+            current = '';
+        } else {
+            current += char;
+        }
+    }
+
+    cells.push(current);
+    return cells;
+}
+
 function parseCsv(text) {
-    const lines = text.split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+    const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
     const questions = [];
 
     lines.forEach((line, index) => {
-        const cells = line.split(',').map(cell => cell.trim());
+        if (index === 0 && line.trim().toLowerCase().startsWith('question,')) {
+            return;
+        }
+
+        const cells = splitCsvLine(line).map(cell => cell.trim());
         if (cells.length < 3) {
+            console.warn(`Row ${index + 1}: not enough columns.`);
             return;
         }
 
-        const questionText = cells[0];
-        const rest = cells.slice(1);
-        if (rest.length < 2) {
-            return;
-        }
-
+        const maybeNewFormat = cells.length >= 7;
+        let questionText = '';
         let options = [];
         let correctIndex = -1;
         let explanation = '';
 
-        if (rest.length >= 3) {
-            const possibleCorrect = rest[rest.length - 2];
-            const possibleExplanation = rest[rest.length - 1];
-            const maybeOptions = rest.slice(0, rest.length - 2);
+        if (maybeNewFormat) {
+            questionText = cells[0];
+            options = cells.slice(1, 5).filter(option => option && option.trim() !== '').map(option => option.trim());
+            const correctIndexRaw = parseInt(cells[5], 10);
+            const zeroBasedIndex = Number.isNaN(correctIndexRaw) ? -1 : correctIndexRaw - 1;
+            explanation = cells[6] ? cells[6].trim() : '';
 
-            if (maybeOptions.includes(possibleCorrect)) {
-                options = maybeOptions;
-                correctIndex = options.indexOf(possibleCorrect);
-                explanation = possibleExplanation;
+            if (!questionText || options.length < 2 || zeroBasedIndex === -1) {
+                console.warn(`Row ${index + 1}: missing question, answers, or valid correct answer index.`);
+                return;
+            }
+
+            if (zeroBasedIndex < 0 || zeroBasedIndex >= options.length) {
+                console.warn(`Row ${index + 1}: correct answer index out of range.`);
+                return;
+            }
+
+            correctIndex = zeroBasedIndex;
+        } else {
+            questionText = cells[0];
+            options = cells.slice(1, 4).filter(option => option && option.trim() !== '').map(option => option.trim());
+            const correctText = cells[4] ? cells[4].trim() : '';
+            explanation = cells[5] ? cells[5].trim() : '';
+            correctIndex = options.findIndex(option => option === correctText);
+
+            if (!questionText || options.length < 2 || correctIndex === -1) {
+                console.warn(`Row ${index + 1}: invalid legacy row.`);
+                return;
             }
         }
 
-        if (correctIndex === -1) {
-            options = rest.slice(0, rest.length - 1);
-            const correctOption = rest[rest.length - 1];
-            correctIndex = options.indexOf(correctOption);
-        }
-
-        if (correctIndex === -1 || options.length === 0) {
-            console.warn(`Row ${index + 1}: correct option not found among options.`);
-            return;
-        }
-
         questions.push({
-            id: index,
-            question: questionText,
+            id: questions.length,
+            question: questionText.trim(),
             options,
             correctIndex,
             explanation,
