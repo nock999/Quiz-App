@@ -1,3 +1,4 @@
-What is the chemical symbol for water?,H2O,CO2,O2,H2O,Represents two hydrogen atoms and one oxygen
-How many bones are in the adult human body?,206,201,210,206,Standard count excluding sesamoid variations
-What part of the cell contains genetic material?,Cytoplasm,Nucleus,Cell membrane,Nucleus,Home of DNA in eukaryotes
+Question,Answer 1,Answer 2,Answer 3,Answer 4,Correct Answer Index,Explanation
+What is the chemical symbol for water?,H2O,CO2,O2,,1,Represents two hydrogen atoms and one oxygen
+How many bones are in the adult human body?,206,201,210,,1,Standard count excluding sesamoid variations
+What part of the cell contains genetic material?,Cytoplasm,Nucleus,Cell membrane,,2,Home of DNA in eukaryotes

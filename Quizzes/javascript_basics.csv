@@ -1,3 +1,4 @@
-Which keyword is used to declare a constant in JavaScript?,var,const,let,const,Constants cannot be reassigned
-What method converts a JSON string into an object?,JSON.stringify(),JSON.parse(),Object.assign(),JSON.parse(),Transforms JSON into JS values
-Which array method adds an element to the end of an array and returns the new length?,push(),pop(),shift(),push(),Appends to the array tail
+Question,Answer 1,Answer 2,Answer 3,Answer 4,Correct Answer Index,Explanation
+Which keyword is used to declare a constant in JavaScript?,var,const,let,,2,Constants cannot be reassigned
+What method converts a JSON string into an object?,JSON.stringify(),JSON.parse(),Object.assign(),,2,Transforms JSON into JS values
+Which array method adds an element to the end of an array and returns the new length?,push(),pop(),shift(),,1,Appends to the array tail

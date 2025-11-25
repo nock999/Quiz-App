@@ -2,9 +2,13 @@
 Created this project with Basic Html,Css and Vanilla Javascript
 
 ## Pre-Requisites
-# A CSV file in the FORMAT-question,option1,option2,option3,...option-n,correct-option
-# Can have any number of questions and any number of options
-# Must Strictly follow the FORMAT
+- Provide a CSV with a header row using the following columns:
+
+  `Question,Answer 1,Answer 2,Answer 3,Answer 4,Correct Answer Index,Explanation`
+
+- Include between two and four answers per question; leave unused answer cells blank.
+- Set **Correct Answer Index** to the 1-based index of the correct answer (1–4) instead of repeating the answer text.
+- Keep one question per row beneath the header. Exporting directly from Google Sheets works well.
 
 ## Documentation
 
