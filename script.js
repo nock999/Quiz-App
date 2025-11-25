@@ -82,6 +82,34 @@ function handleUpload(event) {
     });
 }
 
+async function fetchDirectoryCsvs() {
+    try {
+        const response = await fetch('Quizzes/', { cache: 'no-store' });
+        const contentType = response.headers.get('content-type') || '';
+
+        if (!response.ok || !contentType.includes('text/html')) {
+            return [];
+        }
+
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const links = Array.from(doc.querySelectorAll('a'));
+
+        const csvFiles = links
+            .map(link => link.getAttribute('href'))
+            .filter(Boolean)
+            .map(href => decodeURIComponent(href))
+            .filter(href => href.toLowerCase().endsWith('.csv'))
+            .map(href => href.split('/').pop());
+
+        return Array.from(new Set(csvFiles));
+    } catch (error) {
+        console.debug('Could not read directory listing for Quizzes/', error);
+        return [];
+    }
+}
+
 async function fetchQuizList() {
     const status = document.getElementById('quiz-status');
     const select = document.getElementById('quiz-list');
@@ -93,25 +121,39 @@ async function fetchQuizList() {
 
     try {
         const response = await fetch('Quizzes/quizzes.json', { cache: 'no-store' });
-        if (!response.ok) {
-            throw new Error('Unable to load quiz list');
+        const manifestQuizzes = response.ok ? await response.json() : [];
+
+        const directoryCsvs = await fetchDirectoryCsvs();
+
+        const manifestMap = new Map();
+        if (Array.isArray(manifestQuizzes)) {
+            manifestQuizzes.forEach(quiz => {
+                if (quiz && quiz.file) {
+                    manifestMap.set(quiz.file, quiz.title || quiz.file);
+                }
+            });
         }
 
-        const quizzes = await response.json();
+        directoryCsvs.forEach(file => {
+            if (!manifestMap.has(file)) {
+                const prettyName = file.replace(/_/g, ' ').replace(/\.csv$/i, '');
+                manifestMap.set(file, prettyName.charAt(0).toUpperCase() + prettyName.slice(1));
+            }
+        });
 
-        if (!Array.isArray(quizzes) || quizzes.length === 0) {
+        if (manifestMap.size === 0) {
             if (status) status.textContent = 'No quizzes found in the Quizzes folder.';
             return;
         }
 
-        quizzes.forEach(quiz => {
+        manifestMap.forEach((title, file) => {
             const option = document.createElement('option');
-            option.value = quiz.file;
-            option.textContent = quiz.title || quiz.file;
+            option.value = file;
+            option.textContent = title;
             select.appendChild(option);
         });
 
-        if (status) status.textContent = `Loaded ${quizzes.length} quiz${quizzes.length > 1 ? 'zes' : ''}.`;
+        if (status) status.textContent = `Loaded ${manifestMap.size} quiz${manifestMap.size > 1 ? 'zes' : ''}.`;
     } catch (error) {
         console.error(error);
         if (status) status.textContent = 'Failed to load quizzes from the server.';
