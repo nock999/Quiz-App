@@ -147,6 +147,42 @@ async function fetchDirectoryCsvs() {
     }
 }
 
+async function fetchGithubCsvs() {
+    try {
+        const { hostname, pathname } = window.location;
+        const owner = hostname.endsWith('github.io') ? hostname.split('.')[0] : null;
+        const pathSegments = pathname.split('/').filter(Boolean);
+        const repo = pathSegments[0] || null;
+
+        if (!owner || !repo) {
+            return [];
+        }
+
+        const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/Quizzes`;
+        const response = await fetch(apiUrl, {
+            headers: { Accept: 'application/vnd.github.v3+json' },
+            cache: 'no-store'
+        });
+
+        if (!response.ok) {
+            return [];
+        }
+
+        const entries = await response.json();
+        if (!Array.isArray(entries)) {
+            return [];
+        }
+
+        return entries
+            .filter(item => item && item.type === 'file' && typeof item.name === 'string')
+            .map(item => item.name)
+            .filter(name => name.toLowerCase().endsWith('.csv'));
+    } catch (error) {
+        console.debug('Could not retrieve quizzes via GitHub API', error);
+        return [];
+    }
+}
+
 async function fetchQuizList() {
     const status = document.getElementById('quiz-status');
     const select = document.getElementById('quiz-list');
@@ -157,40 +193,28 @@ async function fetchQuizList() {
     select.innerHTML = '';
 
     try {
-        const response = await fetch('Quizzes/quizzes.json', { cache: 'no-store' });
-        const manifestQuizzes = response.ok ? await response.json() : [];
+        const [directoryCsvs, githubCsvs] = await Promise.all([
+            fetchDirectoryCsvs(),
+            fetchGithubCsvs()
+        ]);
 
-        const directoryCsvs = await fetchDirectoryCsvs();
+        const allCsvs = Array.from(new Set([...directoryCsvs, ...githubCsvs]));
 
-        const manifestMap = new Map();
-        if (Array.isArray(manifestQuizzes)) {
-            manifestQuizzes.forEach(quiz => {
-                if (quiz && quiz.file) {
-                    manifestMap.set(quiz.file, quiz.title || quiz.file);
-                }
-            });
-        }
-
-        directoryCsvs.forEach(file => {
-            if (!manifestMap.has(file)) {
-                const prettyName = file.replace(/_/g, ' ').replace(/\.csv$/i, '');
-                manifestMap.set(file, prettyName.charAt(0).toUpperCase() + prettyName.slice(1));
-            }
-        });
-
-        if (manifestMap.size === 0) {
+        if (!allCsvs.length) {
             if (status) status.textContent = 'No quizzes found in the Quizzes folder.';
             return;
         }
 
-        manifestMap.forEach((title, file) => {
+        allCsvs.forEach(file => {
+            const prettyName = file.replace(/_/g, ' ').replace(/\.csv$/i, '');
+            const displayName = prettyName.charAt(0).toUpperCase() + prettyName.slice(1);
             const option = document.createElement('option');
             option.value = file;
-            option.textContent = title;
+            option.textContent = displayName;
             select.appendChild(option);
         });
 
-        if (status) status.textContent = `Loaded ${manifestMap.size} quiz${manifestMap.size > 1 ? 'zes' : ''}.`;
+        if (status) status.textContent = `Loaded ${allCsvs.length} quiz${allCsvs.length > 1 ? 'zes' : ''}.`;
     } catch (error) {
         console.error(error);
         if (status) status.textContent = 'Failed to load quizzes from the server.';

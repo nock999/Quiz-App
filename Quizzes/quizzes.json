@@ -10,5 +10,21 @@
   {
     "file": "science_trivia.csv",
     "title": "Science Trivia"
+  },
+  {
+    "file": "infosec_structure_quiz.csv",
+    "title": "InfoSec Structure Quiz"
+  },
+  {
+    "file": "infosec_structure_quiz_test001.csv",
+    "title": "InfoSec Structure Quiz (Test 001)"
+  },
+  {
+    "file": "NewTest001.csv",
+    "title": "New Test 001"
+  },
+  {
+    "file": "NewTest002.csv",
+    "title": "New Test 002"
   }
 ]
