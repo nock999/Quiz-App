@@ -1,0 +1,7 @@
+Unused components assessment
+============================
+
+- Quizzes/quizzes.json — not referenced by any script (`rg "quizzes.json"` returns nothing). It appears to be an abandoned manifest; deleting it would reduce clutter without affecting quiz loading. Keeping it only makes sense if we plan to revive a JSON-based quiz index.
+- images/Back-Btn.svg — no HTML or CSS references. This asset looks like an older navigation icon; removing it would shrink the repo, unless we expect to reintroduce SVG buttons.
+- images/bg.png and images/wordupload.jpg — unused image assets (no references in templates or styles). They can be removed to save space; retain only if we need them for future marketing or background concepts.
+- Quiz-App-ColorPalette.png, Quiz-App-Documentation.pdf, Quiz-App-Figma.fig — design/reference files not consumed by the app runtime. They are useful as documentation artifacts, so keep them unless we want a strictly minimal distribution build.
